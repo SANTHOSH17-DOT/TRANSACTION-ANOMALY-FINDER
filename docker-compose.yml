@@ -1,0 +1,25 @@
+version: '3'
+services:
+  fin-anomoly-frontend:
+    container_name: fin-anomoly-frontend
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "${PORT}:3000"
+    volumes:
+      - ./:/app
+      - /app/node_modules
+    command:
+      - bash
+      - -c
+      - |
+        npm i
+        if [ "$NODE_ENV" == "PROD" ]
+        then
+          npm install -g serve
+          npm run build
+          serve -s build
+        else
+          npm start
+        fi
